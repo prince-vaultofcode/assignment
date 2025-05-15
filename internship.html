@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.5s ease;
+        }
+
+        body.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 3em;
+            color: #2997ff;
+            opacity: 0;
+            transform: translateY(-30px);
+            transition: all 1s ease;
+            transition-delay: 0.5s;
+        }
+
+        h1.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .course-card {
+            background: #111;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(41, 151, 255, 0.3);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .course-card.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(41, 151, 255, 0.8);
+            background: rgba(41, 151, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(41, 151, 255, 0.2));
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .course-card h3 {
+            color: #2997ff;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .course-card p {
+            margin-bottom: 20px;
+        }
+
+        .course-card .duration {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .course-card .price {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-weight: bold;
+            color: #2997ff;
+        }
+
+        .enroll-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2997ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .enroll-btn:hover {
+            background: #1d6cbd;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(41, 151, 255, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Internship Programs</h1>
+        
+        <div class="courses-grid" id="coursesGrid">
+            <!-- Course cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        const courses = [
+            {
+                title: "Web Development",
+                description: "Learn full-stack web development with HTML, CSS, JavaScript, React, and Node.js",
+                duration: "3 months",
+                price: "$499",
+                image: "web-dev.jpg"
+            },
+            {
+                title: "Data Science",
+                description: "Master data analysis, machine learning, and statistical modeling",
+                duration: "4 months",
+                price: "$599",
+                image: "data-science.jpg"
+            },
+            {
+                title: "UI/UX Design",
+                description: "Create beautiful user interfaces and enhance user experience",
+                duration: "2 months",
+                price: "$399",
+                image: "ui-ux.jpg"
+            },
+            {
+                title: "Mobile App Development",
+                description: "Build iOS and Android apps using React Native",
+                duration: "3 months",
+                price: "$549",
+                image: "mobile-dev.jpg"
+            },
+            {
+                title: "Digital Marketing",
+                description: "Learn SEO, social media marketing, and content strategy",
+                duration: "2 months",
+                price: "$349",
+                image: "digital-marketing.jpg"
+            },
+            {
+                title: "Cloud Computing",
+                description: "Master AWS, Azure, and cloud infrastructure",
+                duration: "3 months",
+                price: "$599",
+                image: "cloud-computing.jpg"
+            }
+        ];
+
+        function createCourseCard(course, index) {
+            return `
+                <div class="course-card" style="transition-delay: ${index * 0.2}s">
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <span class="duration">Duration: ${course.duration}</span>
+                    <span class="price">${course.price}</span>
+                    <br><br>
+                    <a href="#" class="enroll-btn">Enroll Now</a>
+                </div>
+            `;
+        }
+
+        function renderCourses() {
+            const coursesGrid = document.getElementById('coursesGrid');
+            coursesGrid.innerHTML = courses.map((course, index) => createCourseCard(course, index)).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourses();
+            
+            // Add loaded class after a brief delay
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                document.querySelector('h1').classList.add('loaded');
+                document.querySelectorAll('.course-card').forEach(card => {
+                    card.classList.add('loaded');
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
